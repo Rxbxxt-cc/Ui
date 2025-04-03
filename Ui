@@ -1,0 +1,65 @@
+local Fluent = {}
+
+-- Création du ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
+
+-- Création de la fenêtre principale
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 550, 0, 600)
+MainFrame.Position = UDim2.new(0.5, -275, 0.5, -300)
+MainFrame.BackgroundColor3 = Color3.fromRGB(80, 80, 80) -- Gris
+MainFrame.BorderSizePixel = 0
+MainFrame.Visible = true
+MainFrame.Parent = ScreenGui
+
+-- Variable pour stocker le titre (sera défini par l'utilisateur)
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size = UDim2.new(1, 0, 0, 40)
+TitleLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Gris foncé
+TitleLabel.Text = "Titre par défaut" -- Titre modifiable
+TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TitleLabel.TextSize = 20
+TitleLabel.Parent = MainFrame
+
+-- Bouton de fermeture
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 50, 0, 40)
+CloseButton.Position = UDim2.new(1, -50, 0, 0)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0) -- Rouge
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.Parent = MainFrame
+
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy() -- Ferme complètement l'UI
+end)
+
+-- Bouton pour masquer la fenêtre
+local HideButton = Instance.new("TextButton")
+HideButton.Size = UDim2.new(0, 100, 0, 40)
+HideButton.Position = UDim2.new(1, -160, 0, 0)
+HideButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100) -- Gris moyen
+HideButton.Text = "Masquer"
+HideButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+HideButton.Parent = MainFrame
+
+HideButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+end)
+
+-- Fonction pour changer le titre (appelée depuis l'autre script)
+function Fluent:SetTitle(newTitle)
+    TitleLabel.Text = newTitle
+end
+
+-- Gestion du bind (Ctrl Droite pour afficher/masquer)
+local UserInputService = game:GetService("UserInputService")
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.RightControl then
+        MainFrame.Visible = not MainFrame.Visible
+    end
+end)
+
+return Fluent
